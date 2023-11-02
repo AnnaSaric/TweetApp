@@ -4,7 +4,7 @@ import Post from "./Post";
 import classes from "./PostsList.module.css";
 import { useState } from "react";
 
-function PostsList() {
+function PostsList(props) {
   const [enteredBody, setEneredBody] = useState("");
   const [enteredAuthor, setEnteredAuthor] = useState("");
 
@@ -18,12 +18,16 @@ function PostsList() {
 
   return (
     <>
-      <Modal>
-        <NewPost
-          onBodyChange={bodyChangeHandler}
-          onAuthorChange={authorChangeHandler}
-        />
-      </Modal>
+      {props.isPosting ? (
+        <Modal onClose={props.onStopPosting}>
+          <NewPost
+            onBodyChange={bodyChangeHandler}
+            onAuthorChange={authorChangeHandler}
+            onCancel={props.onStopPosting}
+          />
+        </Modal>
+      ) : null}
+
       <ul className={classes.posts}>
         <Post author={enteredAuthor} body={enteredBody} />
         <Post author="Nada" body="React is awesome!!!" />
